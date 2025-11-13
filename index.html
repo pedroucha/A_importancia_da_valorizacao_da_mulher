@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pirão de Aipim — Cardápio</title>
+<style>
+  :root{
+    --white:#ffffff;
+    --muted:rgba(255,255,255,0.85);
+    --accent:rgba(255,255,255,0.95);
+  }
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color:var(--white);
+    background:#5a3a2a url('bg.jpg') center/cover fixed;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    padding:28px 18px;
+    box-sizing:border-box;
+  }
+
+  .wrap{max-width:780px;margin:0 auto;background:linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.15));padding:24px;border-radius:6px}
+
+  h1{font-size:64px;text-align:center;margin:6px 0 8px;font-weight:700;letter-spacing:1px}
+  .size-title{font-size:34px;text-align:center;margin:18px 0;font-weight:700}
+  p.note{font-size:18px;text-align:center;margin:14px 12px;color:var(--muted);line-height:1.4}
+
+  .menu{margin-top:6px}
+  .item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:14px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    font-size:20px;
+  }
+  .item .name{flex:1}
+  .price{white-space:nowrap;font-weight:700;font-size:20px;color:var(--accent)}
+
+  /* maior espaçamento e fonte para o estilo das fotos */
+  @media(min-width:840px){
+    h1{font-size:96px}
+    .size-title{font-size:42px}
+    .item{font-size:26px;padding:18px 12px}
+    p.note{font-size:20px}
+  }
+
+  .actions{display:flex;justify-content:center;margin-top:18px}
+  .btn{background:rgba(0,0,0,0.4);color:var(--white);padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.06)}
+  .btn:active{transform:translateY(1px)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Pirão De Aipim</h1>
+
+    <section>
+      <div class="size-title">Tamanho P</div>
+
+      <div class="menu">
+        <div class="item"><div class="name">Pirão Misto</div><div class="price">R$ 24,90</div></div>
+        <div class="item"><div class="name">Pirão De Calabresa</div><div class="price">R$ 24,90</div></div>
+        <div class="item"><div class="name">Pirão De Frango</div><div class="price">R$ 24,90</div></div>
+        <div class="item"><div class="name">Pirão De Carne do Sol</div><div class="price">R$ 32,90</div></div>
+        <div class="item"><div class="name">Pirão De Camarão</div><div class="price">R$ 32,90</div></div>
+      </div>
+
+      <p class="note">Tamanho P tem 250 GRMS de Pirão de aipim e 100 grms de proteína. OBS: o misto é 33 GRMS de cada proteína (o misto é Calabresa, Carne do sol e Frango)</p>
+    </section>
+
+    <section>
+      <div class="size-title">Tamanho M</div>
+
+      <div class="menu">
+        <div class="item"><div class="name">Pirão Misto</div><div class="price">R$ 32,90</div></div>
+        <div class="item"><div class="name">Pirão De Calabresa</div><div class="price">R$ 32,90</div></div>
+        <div class="item"><div class="name">Pirão De Frango</div><div class="price">R$ 32,90</div></div>
+        <div class="item"><div class="name">Pirão De Carne do Sol</div><div class="price">R$ 43,90</div></div>
+        <div class="item"><div class="name">Pirão De Camarão</div><div class="price">R$ 43,90</div></div>
+      </div>
+
+      <p class="note">Tamanho M tem 350 GRMS de Pirão de aipim e 150 grms de proteína. OBS: o misto é 50 GRMS de cada proteína (o misto é Calabresa, Carne do sol e Frango)</p>
+    </section>
+
+    <section>
+      <div class="size-title">Tamanho G</div>
+
+      <div class="menu">
+        <div class="item"><div class="name">Pirão Misto</div><div class="price">R$ 57,90</div></div>
+        <div class="item"><div class="name">Pirão De Calabresa</div><div class="price">R$ 57,90</div></div>
+        <div class="item"><div class="name">Pirão De Frango</div><div class="price">R$ 57,90</div></div>
+        <div class="item"><div class="name">Pirão De Carne do Sol</div><div class="price">R$ 72,90</div></div>
+        <div class="item"><div class="name">Pirão De Camarão</div><div class="price">R$ 72,90</div></div>
+      </div>
+
+      <p class="note">Tamanho G tem 700 GRMS de Pirão de aipim e 300 grms de proteína. OBS: o misto é 100 GRMS de cada proteína (o misto é Calabresa, Carne do sol e Frango)</p>
+    </section>
+
+    <div class="actions">
+      <a class="btn" href="#" onclick="window.print();return false;">Exportar / Imprimir (PDF)</a>
+    </div>
+  </div>
+</body>
+</html>
