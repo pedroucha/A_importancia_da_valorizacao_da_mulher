@@ -1,904 +1,232 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantina Ágape - Pedido Online</title>
-    <style>
-        :root {
-            --primary-color: #f77d13; /* Laranja da Logo */
-            --background-color: #f7f7f7;
-            --text-color: #3e3e3e;
-            --card-white: #ffffff;
-            --green-whatsapp: #25d366;
-            --secondary-color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valorização da Mulher</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        body { background-color: var(--background-color); color: var(--text-color); padding-bottom: 80px; }
+  <style>
 
-        /* HEADER */
-        header {
-            background-color: var(--card-white);
-            padding: 20px 0 0; /* Padding superior */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    @keyframes fade {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
 
-        .logo-area {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 0 15px 20px; /* Padding inferior para separar do horário */
-        }
+    
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(131, 24, 67, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
 
-        .logo-image {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%; 
-            object-fit: contain;
-            background: var(--primary-color);
-            padding: 5px;
-        }
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: aparecer 0.5s ease;
+    }
 
-        .restaurant-info { text-align: left; }
-        .restaurant-info h1 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 2px; }
-        .restaurant-info p { font-size: 0.9rem; color: #717171; }
-        
-        .status-link {
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .status { 
-            font-weight: bold; 
-            font-size: 0.95rem; 
-        }
-        .delivery-info { font-size: 0.8rem; color: var(--secondary-color); margin-top: 5px; }
+    @keyframes aparecer {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
 
-        /* HORÁRIOS COLAPSÁVEIS */
-        .schedule-detail {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 15px;
-            overflow: hidden;
-            max-height: 0; /* Começa fechado */
-            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
-            background: #fff;
-            border-top: 1px solid #eee;
-        }
+    #closeBtn {
+      float: right;
+      font-size: 25px;
+      cursor: pointer;
+      color: #be185d;
+    }
 
-        .schedule-content {
-            padding: 0 0 10px 0;
-        }
+    #closeBtn:hover {
+      color: #831843;
+    }
 
-        .schedule-detail h4 {
-            color: var(--secondary-color);
-            margin: 10px 0;
-            font-size: 1rem;
-            font-weight: 600;
-        }
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
 
-        .schedule-detail ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 0.9rem;
-        }
+    /* ===== SITE ===== */
 
-        .schedule-detail li {
-            display: flex; 
-            justify-content: space-between; 
-            padding: 5px 0;
-            border-bottom: 1px dashed #eee;
-        }
-        .schedule-detail li:last-child {
-            border-bottom: none;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fdf2f8;
+      color: #333;
+    }
 
-        /* MENU CATEGORIAS */
-        .categories {
-            display: flex;
-            overflow-x: auto;
-            padding: 15px;
-            gap: 10px;
-            background: var(--card-white);
-            margin-bottom: 10px;
-            white-space: nowrap;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.03);
-            max-width: 800px;
-            margin: 0 auto 10px;
-        }
-        
-        .cat-btn {
-            border: 1px solid #ddd;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: white;
-            color: #717171;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+    header {
+      background: #be185d;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
 
-        .cat-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+    nav {
+      background: #f9a8d4;
+      padding: 15px;
+      text-align: center;
+    }
 
-        /* LISTA DE PRODUTOS e MODAL (sem alterações significativas) */
-        .menu-container { padding: 15px; max-width: 800px; margin: 0 auto; }
-        
-        .section-title { 
-            margin: 25px 0 10px; 
-            font-size: 1.4rem; 
-            font-weight: 600; 
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            color: var(--secondary-color);
-        }
+    nav a {
+      margin: 0 15px;
+      color: #831843;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-        .product-card {
-            display: flex;
-            background: var(--card-white);
-            border-radius: 8px;
-            margin-bottom: 15px;
-            padding: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid #eee;
-        }
+    section {
+      padding: 40px;
+    }
 
-        .product-info { flex: 1; padding-right: 10px; }
-        .product-title { font-weight: 600; margin-bottom: 5px; color: #333; font-size: 1.1rem; }
-        .product-desc { font-size: 0.85rem; color: #717171; margin-bottom: 8px; line-height: 1.4; }
-        .product-price { color: var(--primary-color); font-weight: bold; font-size: 1.2rem; }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-        .product-img {
-            width: 110px;
-            min-width: 110px;
-            height: 110px;
-            background-color: #eee;
-            border-radius: 8px;
-            object-fit: cover;
-            position: relative;
-        }
+    button {
+      background: #be185d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
 
-        .add-btn {
-            display: block;
-            width: 100%;
-            max-width: 100px;
-            margin-top: 5px;
-            padding: 8px;
-            background: var(--primary-color);
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
+    button:hover {
+      background: #9d174d;
+    }
 
-        /* BARRA DO CARRINHO (STICKY FOOTER) */
-        .cart-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--card-white);
-            padding: 15px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            display: none; 
-            justify-content: space-between;
-            align-items: center;
-            z-index: 200;
-        }
-
-        /* MODAL DE CHECKOUT */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: flex-end; 
-            z-index: 300;
-            padding: 0 0 0;
-        }
-        
-        .modal-content {
-            background: white;
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
-        }
-        .cart-summary { margin-bottom: 20px; max-height: 250px; overflow-y: auto; font-size: 0.9rem; padding: 10px; border: 1px solid #eee; border-radius: 5px; }
-
-    </style>
+    footer {
+      background: #be185d;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
 </head>
-<body onload="populateDeliveryLocations(); renderMenu(); checkRestaurantStatus(); renderSchedule();">
 
-    <header>
-        <div class="logo-area">
-            <img src="Logotipo.png" class="logo-image" alt="Logo Cantina Ágape">
-            
-            <div class="restaurant-info">
-                <h1>Cantina Ágape</h1>
-                <p>Comida Brasileira • Marmitas e Pirão de Aipim</p>
-                <span class="status-link" onclick="toggleSchedule()">
-                    <span id="current-status" class="status">● Checando status...</span> 
-                    <small style="color: #717171; font-weight: normal; margin-left: 5px;">(Ver Horários)</small>
-                </span>
-                <div class="delivery-info">Tempo de preparo: 30-45 minutos | Somente Delivery</div>
-            </div>
-        </div>
-        
-        <div class="schedule-detail" id="schedule-detail">
-            <div class="schedule-content">
-                <h4>Horários de Atendimento (Delivery)</h4>
-                <div id="schedule-list"></div>
-            </div>
-        </div>
-    </header>
+<body>
+
+<div id="popup">
+  <div class="popup-content">
+    <span id="closeBtn">&times;</span>
+    <h2>Mensagem Especial 💜</h2>
+    <p>Assista e reflita sobre a importância da valorização da mulher</p>
+
+    <video id="video" controls autoplay muted>
+      <source src="seu-video.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<header>
+  <h1>Campanha de Valorização da Mulher</h1>
+  <p>Respeito • Igualdade • Empoderamento</p>
+</header>
+
+<nav>
+  <a href="#sobre">Sobre</a>
+  <a href="#formas">Formas de Valorização</a>
+  <a href="#biografias">Biografias</a>
+  <a href="#acao">Participe</a>
+</nav>
+
+<section id="formas">
+  <h2>Formas de Valorização</h2>
+
+  <div class="card">
+    <h3>Educação e Conscientização</h3>
+    <p>Promover igualdade de gênero através da educação.</p>
+  </div>
+
+  <div class="card">
+    <h3>Respeito no Dia a Dia</h3>
+    <p>Combater atitudes machistas e valorizar opiniões.</p>
+  </div>
+
+  <div class="card">
+    <h3>Valorização Profissional</h3>
+    <p>Igualdade salarial e oportunidades no trabalho.</p>
+  </div>
+
+  <div class="card">
+    <h3>Combate à Violência</h3>
+    <p>Denunciar abusos e apoiar vítimas.</p>
+  </div>
+</section>
+
+<section id="biografias">
+  <h2>Mulheres que Inspiram</h2>
+
+  <div class="card">
+    <h3>Maria da Penha</h3>
+    <p>...</p>
+  </div>
+
+  <div class="card">
+    <h3>Frida Kahlo</h3>
+    <p>...</p>
+  </div>
+
+  <div class="card">
+    <h3>Malala Yousafzai</h3>
+    <p>...</p>
+  </div>
+</section>
+
+<section id="acao">
+  <button onclick="window.open('biografias.html', '_blank')">
+    Ver biografias completas
+  </button>
+</section>
+
+<a href="aura.html">não clique!!!</a>
+
+<footer>
+  <p>© 2026 - Campanha de Valorização da Mulher</p>
+</footer>
+
+<script>
+window.onload = function() {
+  setTimeout(() => {
+    document.getElementById("popup").style.display = "flex";
+  }, 1000);
+};
+
+document.getElementById("closeBtn").onclick = function() {
+  document.getElementById("popup").style.display = "none";
+
+  let video = document.getElementById("video");
+  video.pause();
+  video.currentTime = 0;
+};
+</script>
 
-    <div class="categories">
-        <button class="cat-btn active" onclick="filterCategory('todos', this)">Todos</button>
-        <button class="cat-btn" onclick="filterCategory('marmitas', this)">Marmitas</button>
-        <button class="cat-btn" onclick="filterCategory('pirao', this)">Pirão de Aipim</button>
-    </div>
-
-    <div class="menu-container" id="menu-list">
-        </div>
-
-    <div class="cart-bar" id="cart-bar">
-        <div class="cart-info">
-            <span id="cart-count">0</span> item(s) <br>
-            <span class="cart-total" id="cart-total">R$ 0,00</span>
-        </div>
-        <button class="finish-btn" onclick="openCheckoutModal()">Ver Carrinho</button>
-    </div>
-
-    <div class="modal-overlay" id="checkout-modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeCheckoutModal()">&times;</button>
-            <h2>Seu Pedido</h2>
-            <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
-            
-            <div id="cart-items-display" class="cart-summary">
-                </div>
-            
-            <div class="form-group">
-                <label>Seu Nome:</label>
-                <input type="text" id="customer-name" placeholder="Ex: João Silva" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Local de Entrega (Bairro/Condomínio):</label>
-                <select id="delivery-location" onchange="updateCartDisplayInModal(); checkDeliveryDetails();" required>
-                    </select>
-            </div>
-
-            <div class="form-group" id="address-details-group" style="display:none;">
-                <label id="address-details-label">Número da Casa ou Bloco e Apto:</label>
-                <input type="text" id="address-details" placeholder="Ex: Rua A, 123 ou Bloco 01, Apto 202" required>
-                <small id="address-helper-text" style="color:#777; display:block; margin-top: 5px;">Detalhes do Endereço (Ex: Ponto de Referência)</small>
-            </div>
-
-            <div class="form-group">
-                <label>Forma de Pagamento:</label>
-                <select id="payment-method" required>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Cartão de crédito">Cartão de crédito</option>
-                    <option value="Cartão de débito">Cartão de débito</option>
-                    <option value="Pix">Pix</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Observações/Troco:</label>
-                <input type="text" id="customer-notes" placeholder="Ex: Precisa de troco para R$ 50,00 ou sem cebola">
-            </div>
-
-            <button class="btn-whatsapp" onclick="sendToWhatsapp()">Enviar Pedido no WhatsApp</button>
-        </div>
-    </div>
-
-    <script>
-        // ---------------- DADOS DO RESTAURANTE ----------------
-        const PHONE_NUMBER = "5571988570074"; 
-        
-        const openingHours = {
-            Segunda: "11:00 - 22:00",
-            Terça: "11:00 - 16:00",
-            Quarta: "11:00 - 22:00",
-            Quinta: "11:00 - 22:00",
-            Sexta: "11:00 - 22:00",
-            Sábado: "11:00 - 22:00",
-            Domingo: "Fechado"
-        };
-
-
-        // ---------------- DADOS DO MENU E IMAGENS ----------------
-        const menuItems = [
-            // --- MARMITAS --- (Imagens de exemplo para marmitas sem foto)
-            { id: 1, category: "marmitas", name: "Filé À Parmegiana", desc: "Filé de frango empanado com queijo e molho de tomate artesanal acompanhado de Arroz, e Purê de batata.", price: 28.90, image: "https://via.placeholder.com/110/f77d13?text=Parmegiana" },
-            { id: 2, category: "marmitas", name: "Fígado bovino acebolado", desc: "Fígado bovino Acebolado acompanhado de Arroz, Macarrão, feijão de caldo e salada de alface e tomate.", price: 25.90, image: "https://via.placeholder.com/110/f77d13?text=F%C3%ADgado" },
-            { id: 3, category: "marmitas", name: "Strogonoff de frango", desc: "Strogonoff de frango acompanhado de Arroz, Purê de batata e batata palha.", price: 28.90, image: "https://via.placeholder.com/110/f77d13?text=Strogonoff" },
-            { id: 4, category: "marmitas", name: "Lasanha à bolonhesa", desc: "Deliciosa Lasanha à bolonhesa. (Tamanho único).", price: 34.90, image: "lasanha.jpeg"},
-            { id: 5, category: "marmitas", name: "Lasanha de frango", desc: "Deliciosa Lasanha de frango. (Tamanho único).", price: 34.90, image: "lasanha.jpeg" },
-
-            // --- PIRÃO DE AIPIM P (250g de Pirão + 100g de Proteína) ---
-            { id: 6, category: "pirao", name: "Pirão Misto P", desc: "250g de Pirão + 100g de Proteína Mista (Calabresa, Carne do sol e Frango). Acompanha vinagrete e batata palha.", price: 24.90, image: "Pirão Misto P e M.jpg" },
-            { id: 7, category: "pirao", name: "Pirão de Calabresa P", desc: "250g de Pirão + 100g de Calabresa. Acompanha salada vinagrete e batata palha.", price: 24.90, image: "Pirão De Calabresa G.jpg" },
-            { id: 8, category: "pirao", name: "Pirão de Frango P", desc: "250g de Pirão + 100g de Frango. Acompanha salada vinagrete e batata palha.", price: 24.90, image: "Pirão De Frango P e M.jpg" },
-            { id: 9, category: "pirao", name: "Pirão de Carne do Sol P", desc: "250g de Pirão + 100g de Carne do sol. Acompanha salada vinagrete e batata palha.", price: 32.90, image: "Pirão De Carne do sol P e M.jpg" },
-            { id: 10, category: "pirao", name: "Pirão de Camarão P", desc: "250g de Pirão + 100g de Camarão. Acompanha salada vinagrete e batata palha.", price: 32.90, image: "Pirão De Camarão P e M.jpg" },
-
-            // --- PIRÃO DE AIPIM M (350g de Pirão + 150g de Proteína) ---
-            { id: 11, category: "pirao", name: "Pirão Misto M", desc: "350g de Pirão + 150g de Proteína Mista (Calabresa, Carne do sol e Frango). Acompanha vinagrete e batata palha.", price: 32.90, image: "Pirão Misto P e M.jpg" },
-            { id: 12, category: "pirao", name: "Pirão de Calabresa M", desc: "350g de Pirão + 150g de Calabresa. Acompanha salada vinagrete e batata palha.", price: 32.90, image: "Pirão De Calabresa G.jpg" },
-            { id: 13, category: "pirao", name: "Pirão de Frango M", desc: "350g de Pirão + 150g de Frango. Acompanha salada vinagrete e batata palha.", price: 32.90, image: "Pirão De Frango P e M.jpg" },
-            { id: 14, category: "pirao", name: "Pirão de Carne do Sol M", desc: "350g de Pirão + 150g de Carne do sol. Acompanha salada vinagrete e batata palha.", price: 43.90, image: "Pirão De Carne do sol P e M.jpg" },
-            { id: 15, category: "pirao", name: "Pirão de Camarão M", desc: "350g de Pirão + 150g de Camarão. Acompanha salada vinagrete e batata palha.", price: 43.90, image: "Pirão De Camarão P e M.jpg" },
-
-            // --- PIRÃO DE AIPIM G (700g de Pirão + 300g de Proteína) ---
-            { id: 16, category: "pirao", name: "Pirão Misto G", desc: "700g de Pirão + 300g de Proteína Mista (Calabresa, Carne do sol e Frango). Acompanha vinagrete e batata palha.", price: 57.90, image: "Pirão Misto Grande.jpg" },
-            { id: 17, category: "pirao", name: "Pirão de Calabresa G", desc: "700g de Pirão + 300g de Calabresa. Acompanha salada vinagrete e batata palha.", price: 57.90, image: "Pirão De Calabresa G.jpg" },
-            { id: 18, category: "pirao", name: "Pirão de Frango G", desc: "700g de Pirão + 300g de Frango. Acompanha salada vinagrete e batata palha.", price: 57.90, image: "Pirão de Frango G.jpg" },
-            { id: 19, category: "pirao", name: "Pirão de Carne do Sol G", desc: "700g de Pirão + 300g de Carne do sol. Acompanha salada vinagrete e batata palha.", price: 72.90, image: "Pirão de Carne do sol G.jpg" },
-            { id: 20, category: "pirao", name: "Pirão de Camarão G", desc: "700g de Pirão + 300g de Camarão. Acompanha salada vinagrete e batata palha.", price: 72.90, image: "Pirão de Camarão G.jpg" },
-        ];
-
-        let cart = []; // Armazena todos os itens adicionados
-
-        // ---------------- DADOS DE ENTREGA ----------------
-        const deliveryZones = [
-            // Abrantes
-            { name: "Fonte da Caixa", fee: 8.00, type: "Rua" },
-            { name: "Nova Abrantes", fee: 8.00, type: "Rua" },
-            { name: "Estiva de Buris", fee: 8.00, type: "Rua" },
-            { name: "Pock de Abrantes", fee: 8.00, type: "Rua" },
-            { name: "Corre Nu", fee: 8.00, type: "Rua" },
-            { name: "Morada Nobre", fee: 8.00, type: "Condominio" },
-            { name: "Rua Sotero Gomes", fee: 8.00, type: "Rua" },
-            { name: "Pedágio (CLN)", fee: 12.00, type: "Rua" },
-            { name: "Costa dos Coqueiros", fee: 8.00, type: "Condominio" },
-            { name: "Costa das Baleias", fee: 8.00, type: "Condominio" },
-            { name: "Costa do Descobrimento", fee: 8.00, type: "Condominio" },
-            { name: "Costa do Cacau", fee: 8.00, type: "Condominio" },
-            { name: "Vog Imperiale", fee: 8.00, type: "Condominio" },
-            { name: "Condomínio Recanto de Abrantes (R$8)", fee: 8.00, type: "Condominio" },
-            { name: "Condomínio Vilas Resindence", fee: 8.00, type: "Condominio" },
-
-            // Rua do Sucupió
-            { name: "Sucupió Principal", fee: 8.00, type: "Rua" },
-            { name: "Jardim Flamboyants", fee: 8.00, type: "Rua" },
-            { name: "Vila Garden (Antes da Inprelaje)", fee: 8.00, type: "Rua" },
-            { name: "Sucupió (Depois do Apoio)", fee: 10.00, type: "Rua" },
-            { name: "Bosque da Aldeia", fee: 10.00, type: "Condominio" },
-            { name: "Mar de Abrantes", fee: 10.00, type: "Condominio" },
-            { name: "Residencial Recanto de Abrantes (R$10)", fee: 10.00, type: "Condominio" },
-            { name: "Beta Ville", fee: 10.00, type: "Condominio" },
-            { name: "Lampedusa", fee: 8.00, type: "Rua" },
-
-            // Região do Outlet
-            { name: "Malícia", fee: 8.00, type: "Rua" },
-            { name: "Alvorada", fee: 10.00, type: "Condominio" },
-            { name: "Portal de Abrantes", fee: 8.00, type: "Condominio" },
-            { name: "Morada Premium", fee: 0.00, type: "Condominio" },
-            { name: "Reserva Premium", fee: 0.00, type: "Condominio" },
-            { name: "Privilege Premium", fee: 0.00, type: "Condominio" },
-            { name: "Sola do Ibiza", fee: 8.00, type: "Condominio" },
-            { name: "Sola do Maiorca", fee: 8.00, type: "Condominio" },
-            { name: "Alphaville 1, 2, 3", fee: 12.00, type: "Condominio" },
-            { name: "Gran Ville", fee: 8.00, type: "Condominio" },
-            { name: "Pau Sul", fee: 8.00, type: "Rua" },
-            { name: "Las Palmas (Até 17h)", fee: 15.00, type: "Rua" }, 
-            { name: "Garden Residence", fee: 8.00, type: "Condominio" },
-            { name: "Consulado da Bélgica (final Malícia)", fee: 10.00, type: "Rua" },
-
-            // Rua dos Laços
-            { name: "Condomínio Manain", fee: 10.00, type: "Condominio" },
-            { name: "Sun Palace", fee: 10.00, type: "Condominio" },
-            { name: "Sun Castle", fee: 10.00, type: "Condominio" },
-            { name: "Parque dos Coqueiros", fee: 10.00, type: "Condominio" },
-            { name: "Évora Sol", fee: 10.00, type: "Condominio" },
-            { name: "Cascais Sol", fee: 10.00, type: "Condominio" },
-            { name: "Vale Viver", fee: 10.00, type: "Condominio" },
-            { name: "Vila Bene", fee: 10.00, type: "Condominio" },
-            { name: "Condomínio Busca Vida", fee: 30.00, type: "Condominio" },
-
-            // Clube da Caixa (Catu)
-            { name: "Porto Sol", fee: 12.00, type: "Condominio" },
-            { name: "Reserva Parque", fee: 12.00, type: "Condominio" },
-            { name: "Pedras do Litoral", fee: 12.00, type: "Condominio" },
-            { name: "Gênova", fee: 12.00, type: "Condominio" },
-            { name: "Garden Clube", fee: 12.00, type: "Condominio" },
-            { name: "Wilson Telles", fee: 12.00, type: "Condominio" },
-            { name: "Solar das Palmeiras", fee: 12.00, type: "Condominio" },
-            { name: "Lisboa Sol", fee: 12.00, type: "Condominio" },
-            { name: "Vila Romana 1 e 2", fee: 12.00, type: "Condominio" },
-            { name: "Sun Park", fee: 12.00, type: "Condominio" },
-            { name: "Vale Verde", fee: 12.00, type: "Condominio" },
-            { name: "Reserva do Litoral", fee: 12.00, type: "Rua" },
-            { name: "Vivenda do Bosque", fee: 12.00, type: "Rua" },
-            { name: "Catu de Abrantes", fee: 15.00, type: "Rua" },
-            { name: "Mutirão de Catu", fee: 15.00, type: "Rua" },
-            { name: "Ponto das Árvores (Catu)", fee: 15.00, type: "Rua" },
-
-            // Jauá
-            { name: "Parque de Jauá", fee: 10.00, type: "Condominio" },
-            { name: "Reserva Mundo Verde", fee: 10.00, type: "Condominio" },
-            { name: "Bosque de Jauá", fee: 10.00, type: "Rua" },
-            { name: "Albatroz", fee: 15.00, type: "Condominio" },
-            { name: "Parque das Dunas", fee: 15.00, type: "Rua" },
-            { name: "Rua Aquários", fee: 15.00, type: "Rua" },
-            { name: "Beira Mar", fee: 15.00, type: "Condominio" },
-            { name: "Bela Vista", fee: 15.00, type: "Rua" },
-            { name: "Pé de Areias", fee: 15.00, type: "Rua" },
-            { name: "Alto de Jauá", fee: 15.00, type: "Rua" },
-            { name: "Jauá Principal", fee: 15.00, type: "Rua" },
-            { name: "Costa do Busca Vida (Jauá)", fee: 15.00, type: "Rua" },
-
-            // Areias e Zona Rural
-            { name: "Areias (Até 17h)", fee: 20.00, type: "Rua" },
-            { name: "Chácara do Rio Jauá", fee: 15.00, type: "Rua" },
-            { name: "Tucunaré", fee: 25.00, type: "Rua" },
-            { name: "Parque Interlagos", fee: 30.00, type: "Rua" },
-            { name: "Cascalheira", fee: 30.00, type: "Rua" },
-            { name: "Cajazeiras de Abrantes", fee: 30.00, type: "Rua" },
-            { name: "Maracaiuba", fee: 30.00, type: "Rua" },
-            { name: "Cordoaria", fee: 30.00, type: "Rua" },
-            { name: "Naturaville 1 e 2", fee: 30.00, type: "Condominio" },
-
-            // Outras Localidades - Altas Taxas
-            { name: "Interlagos", fee: 30.00, type: "Rua" },
-            { name: "Arembepe", fee: 30.00, type: "Rua" },
-            { name: "Buraquinho", fee: 30.00, type: "Rua" },
-            { name: "Vilas do Atlântico", fee: 30.00, type: "Rua" },
-            { name: "Lauro de Freitas", fee: 30.00, type: "Rua" },
-            { name: "Ipitanga", fee: 30.00, type: "Rua" },
-            { name: "Stella Maris", fee: 40.00, type: "Condominio" },
-            { name: "Praia do Flamengo", fee: 50.00, type: "Rua" },
-            { name: "Itapuã", fee: 60.00, type: "Rua" },
-            { name: "Dias D'Ávila", fee: 80.00, type: "Rua" },
-            
-            // Sem entrega
-            { name: "Portão (Não Entregamos)", fee: 9999.00, type: "NoDelivery" },
-        ];
-
-
-        // ---------------- FUNÇÕES GERAIS ----------------
-
-        function formatBRL(price) {
-            return 'R$ ' + parseFloat(price).toFixed(2).replace('.', ',');
-        }
-
-        // ---------------- FUNÇÕES DE HORÁRIO ----------------
-
-        function getDayName(dayIndex) {
-            const days = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-            return days[dayIndex];
-        }
-        
-        function checkRestaurantStatus() {
-            const now = new Date();
-            const dayName = getDayName(now.getDay());
-            const hoursString = openingHours[dayName];
-            const statusSpan = document.getElementById('current-status');
-            
-            // Caso Fechado (Domingo)
-            if (hoursString === "Fechado") {
-                statusSpan.innerText = "● Fechado (Abre Segunda)";
-                statusSpan.style.color = "#d9534f"; // Vermelho
-                return;
-            }
-
-            try {
-                const [openTimeStr, closeTimeStr] = hoursString.split(' - ');
-                
-                const [openH, openM] = openTimeStr.split(':').map(Number);
-                const [closeH, closeM] = closeTimeStr.split(':').map(Number);
-
-                // Cria objetos Date para comparação no dia de hoje
-                const openTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), openH, openM, 0);
-                const closeTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), closeH, closeM, 0);
-
-                if (now >= openTime && now <= closeTime) {
-                    statusSpan.innerText = "● Aberto Agora";
-                    statusSpan.style.color = "#25d366"; // Verde
-                } else {
-                    statusSpan.innerText = "● Fechado (Abre às " + openTimeStr + ")";
-                    statusSpan.style.color = "#d9534f"; // Vermelho
-                }
-
-            } catch (e) {
-                statusSpan.innerText = "● Status Indisponível";
-                statusSpan.style.color = "#717171";
-            }
-        }
-        
-        function renderSchedule() {
-            const listDiv = document.getElementById('schedule-list');
-            let html = '<ul>';
-            const nowDay = getDayName(new Date().getDay());
-
-            for (const day in openingHours) {
-                const time = openingHours[day];
-                const isToday = day === nowDay;
-                
-                html += `<li style="${isToday ? 'font-weight: bold; color: var(--primary-color);' : ''}">
-                            <span>${day}${isToday ? ' (Hoje)' : ''}:</span>
-                            <span>${time}</span>
-                         </li>`;
-            }
-            html += '</ul>';
-            listDiv.innerHTML = html;
-        }
-
-        function toggleSchedule() {
-            const detail = document.getElementById('schedule-detail');
-            // Se já tem altura máxima, significa que está aberto, então fecha.
-            if (detail.style.maxHeight && detail.style.maxHeight !== '0px') {
-                detail.style.maxHeight = '0px';
-                detail.style.paddingTop = '0';
-                detail.style.paddingBottom = '0';
-            } else {
-                // Abre, definindo altura total
-                detail.style.maxHeight = detail.scrollHeight + "px";
-                detail.style.paddingTop = '10px';
-                detail.style.paddingBottom = '10px';
-            }
-        }
-
-
-        // ---------------- FUNÇÕES DE ENDEREÇO E ENTREGA ----------------
-
-        function populateDeliveryLocations() {
-            const select = document.getElementById('delivery-location');
-            select.innerHTML = ''; 
-
-            const regions = [
-                { label: "--- Selecione seu Bairro/Condomínio ---", zones: [] },
-                { label: "📍 ABRANTES", zones: ["Fonte da Caixa", "Nova Abrantes", "Estiva de Buris", "Pock de Abrantes", "Corre Nu", "Morada Nobre", "Rua Sotero Gomes", "Pedágio (CLN)", "Costa dos Coqueiros", "Costa das Baleias", "Costa do Descobrimento", "Costa do Cacau", "Vog Imperiale", "Condomínio Recanto de Abrantes (R$8)", "Condomínio Vilas Resindence"] },
-                { label: "📍 RUA DO SUCUPIÓ", zones: ["Sucupió Principal", "Jardim Flamboyants", "Vila Garden (Antes da Inprelaje)", "Sucupió (Depois do Apoio)", "Bosque da Aldeia", "Mar de Abrantes", "Residencial Recanto de Abrantes (R$10)", "Beta Ville", "Lampedusa"] },
-                { label: "📍 REGIÃO DO OUTLET", zones: ["Malícia", "Alvorada", "Portal de Abrantes", "Morada Premium", "Reserva Premium", "Privilege Premium", "Sola do Ibiza", "Sola do Maiorca", "Alphaville 1, 2, 3", "Gran Ville", "Pau Sul", "Las Palmas (Até 17h)", "Garden Residence", "Consulado da Bélgica (final Malícia)"] },
-                { label: "📍 RUA DOS LAÇOS", zones: ["Condomínio Manain", "Sun Palace", "Sun Castle", "Parque dos Coqueiros", "Évora Sol", "Cascais Sol", "Vale Viver", "Vila Bene", "Condomínio Busca Vida"] },
-                { label: "📍 CLUBE DA CAIXA (CATU)", zones: ["Porto Sol", "Reserva Parque", "Pedras do Litoral", "Gênova", "Garden Clube", "Wilson Telles", "Solar das Palmeiras", "Lisboa Sol", "Vila Romana 1 e 2", "Sun Park", "Vale Verde", "Reserva do Litoral", "Vivenda do Bosque", "Catu de Abrantes", "Mutirão de Catu", "Ponto das Árvores (Catu)"] },
-                { label: "📍 JAUÁ", zones: ["Parque de Jauá", "Reserva Mundo Verde", "Bosque de Jauá", "Albatroz", "Parque das Dunas", "Rua Aquários", "Beira Mar", "Bela Vista", "Pé de Areias", "Alto de Jauá", "Jauá Principal", "Costa do Busca Vida (Jauá)"] },
-                { label: "📍 AREIAS E ZONA RURAL", zones: ["Areias (Até 17h)", "Chácara do Rio Jauá", "Tucunaré", "Parque Interlagos", "Cascalheira", "Cajazeiras de Abrantes", "Maracaiuba", "Cordoaria", "Naturaville 1 e 2"] },
-                { label: "📍 OUTRAS CIDADES (CONSULTE DISPONIBILIDADE)", zones: ["Interlagos", "Arembepe", "Buraquinho", "Vilas do Atlântico", "Lauro de Freitas", "Ipitanga", "Stella Maris", "Praia do Flamengo", "Itapuã", "Dias D'Ávila", "Portão (Não Entregamos)"] },
-            ];
-            
-            regions.forEach(region => {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = region.label.replace('--- Selecione seu Bairro/Condomínio ---', '');
-
-                if (region.zones.length === 0) {
-                     const option = document.createElement('option');
-                     option.innerText = region.label;
-                     option.value = "";
-                     option.disabled = true;
-                     option.selected = true;
-                     select.appendChild(option);
-                     return;
-                }
-
-                region.zones.forEach(zoneName => {
-                    const zone = deliveryZones.find(z => z.name === zoneName);
-                    if (zone) {
-                        const option = document.createElement('option');
-                        option.value = zone.name;
-                        const feeDisplay = zone.fee === 0.00 ? 'GRÁTIS' : formatBRL(zone.fee);
-                        option.innerText = `${zone.name} (${feeDisplay})`;
-                        if (zone.type === 'NoDelivery') {
-                             option.disabled = true;
-                             option.style.color = 'red';
-                        }
-                        optgroup.appendChild(option);
-                    }
-                });
-                select.appendChild(optgroup);
-            });
-        }
-
-        function checkDeliveryDetails() {
-            const locationSelect = document.getElementById('delivery-location');
-            const addressDetailsGroup = document.getElementById('address-details-group');
-            const addressDetailsLabel = document.getElementById('address-details-label');
-            const addressDetailsInput = document.getElementById('address-details');
-            const addressHelperText = document.getElementById('address-helper-text');
-            const selectedLocationName = locationSelect.value;
-
-            if (!selectedLocationName) {
-                addressDetailsGroup.style.display = 'none';
-                return;
-            }
-
-            const locationData = deliveryZones.find(z => z.name === selectedLocationName);
-
-            if (locationData && locationData.type === 'Condominio') {
-                addressDetailsLabel.innerText = "Bloco e Apartamento:";
-                addressDetailsInput.placeholder = "Ex: Bloco 01, Apto 202";
-                addressHelperText.innerText = "Informe também o nome da Rua ou Ponto de Referência dentro do condomínio.";
-                addressDetailsGroup.style.display = 'block';
-            } else if (locationData && (locationData.type === 'Rua' || locationData.type === 'NoDelivery')) {
-                addressDetailsLabel.innerText = "Rua e Número da Casa:";
-                addressDetailsInput.placeholder = "Ex: Rua das Flores, Casa 123";
-                addressHelperText.innerText = "Informe o nome da Rua, número da Casa e Ponto de Referência.";
-                addressDetailsGroup.style.display = 'block';
-            } else {
-                 addressDetailsGroup.style.display = 'none';
-            }
-        }
-
-        // ---------------- FUNÇÕES DE MENU E CARRINHO ----------------
-
-        function renderMenu(filter = 'todos') {
-            const container = document.getElementById('menu-list');
-            container.innerHTML = '';
-            
-            let categoriesRendered = new Set();
-            
-            menuItems.forEach(item => {
-                if (filter === 'todos' || item.category === filter) {
-                    
-                    if (!categoriesRendered.has(item.category)) {
-                        const title = document.createElement('h2');
-                        title.className = 'section-title';
-                        title.innerText = item.category === 'marmitas' ? 'Marmitas' : 'Pirão de Aipim';
-                        container.appendChild(title);
-                        categoriesRendered.add(item.category);
-                    }
-                    
-                    const html = `
-                        <div class="product-card">
-                            <img src="${item.image}" class="product-img" alt="${item.name}">
-                            <div class="product-info">
-                                <div class="product-title">${item.name}</div>
-                                <div class="product-desc">${item.desc}</div>
-                                <div class="product-price">${formatBRL(item.price)}</div>
-                                <button class="add-btn" onclick="addToCart(${item.id})">Adicionar</button>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += html;
-                }
-            });
-            
-            if (container.innerHTML === '') {
-                container.innerHTML = `<p style="text-align: center; margin-top: 50px; color: #717171;">Nenhum item encontrado nesta categoria.</p>`;
-            }
-        }
-
-        function filterCategory(category, button) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            renderMenu(category);
-        }
-
-        function updateCartUI() {
-            const cartBar = document.getElementById('cart-bar');
-            const countSpan = document.getElementById('cart-count');
-            const totalSpan = document.getElementById('cart-total');
-
-            if (cart.length > 0) {
-                cartBar.style.display = 'flex';
-                countSpan.innerText = cart.length;
-                
-                const total = cart.reduce((sum, item) => sum + item.price, 0);
-                totalSpan.innerText = formatBRL(total);
-            } else {
-                cartBar.style.display = 'none';
-            }
-        }
-        
-        function addToCart(id) {
-            const item = menuItems.find(p => p.id === id);
-            cart.push(item);
-            updateCartUI();
-            if (document.getElementById('checkout-modal').style.display === 'flex') {
-                updateCartDisplayInModal();
-            }
-        }
-        
-        function changeQuantity(itemId, change) {
-            if (change > 0) {
-                const item = menuItems.find(p => p.id === itemId);
-                cart.push(item);
-            } else if (change < 0) {
-                const indexToRemove = cart.lastIndexOf(cart.find(p => p.id === itemId));
-                if (indexToRemove !== -1) {
-                    cart.splice(indexToRemove, 1);
-                }
-            }
-            
-            updateCartDisplayInModal();
-            updateCartUI();
-
-            if (cart.length === 0 && change < 0) {
-                closeCheckoutModal();
-            }
-        }
-
-        // ---------------- CHECKOUT & WHATSAPP ----------------
-
-        function updateCartDisplayInModal() {
-            const itemsDisplay = document.getElementById('cart-items-display');
-            const locationSelect = document.getElementById('delivery-location');
-            
-            let groupedCart = {};
-            let orderTotal = 0;
-            
-            cart.forEach(item => {
-                if (!groupedCart[item.id]) {
-                    groupedCart[item.id] = { ...item, quantity: 0 };
-                }
-                groupedCart[item.id].quantity++;
-                orderTotal += item.price;
-            });
-
-            let html = '';
-
-            // 1. Lista de Itens
-            for (let id in groupedCart) {
-                const item = groupedCart[id];
-                const lineTotal = item.quantity * item.price;
-                
-                html += `<div class="summary-item">
-                            <div class="item-name">
-                                ${item.name} <br>
-                                <small>${formatBRL(item.price)} cada</small>
-                            </div>
-                            <div class="item-controls">
-                                <button class="qty-btn remove" onclick="changeQuantity(${item.id}, -1)">-</button>
-                                <span class="item-quantity">${item.quantity}</span>
-                                <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
-                            </div>
-                        </div>`;
-            }
-
-            if (Object.keys(groupedCart).length === 0) {
-                 html = `<p style="text-align: center; color: #717171;">Seu carrinho está vazio. Adicione itens do cardápio!</p>`;
-                 itemsDisplay.innerHTML = html;
-                 document.querySelector('.btn-whatsapp').disabled = true;
-                 document.querySelector('.btn-whatsapp').innerText = 'Enviar Pedido no WhatsApp';
-                 return;
-            }
-            
-            // 2. Cálculo e Exibição da Taxa de Entrega
-            const selectedLocation = locationSelect.value;
-            const locationData = deliveryZones.find(z => z.name === selectedLocation);
-            let deliveryFee = 0.00;
-            let grandTotal = orderTotal;
-            let deliveryText = "Selecione o local de entrega";
-            
-            document.querySelector('.btn-whatsapp').disabled = false;
-            document.querySelector('.btn-whatsapp').innerText = 'Enviar Pedido no WhatsApp';
-
-
-            if (locationData) {
-                deliveryFee = locationData.fee;
-                grandTotal = orderTotal + deliveryFee;
-                deliveryText = locationData.name;
-
-                if (locationData.type === 'NoDelivery') {
-                    html += `<div style="color: red; margin-top: 15px; font-weight: bold;">
-                                Localidade: ${selectedLocation} - Não fazemos entregas nesta área. Por favor, escolha outra região.
-                            </div>`;
-                    document.querySelector('.btn-whatsapp').disabled = true;
-                    document.querySelector('.btn-whatsapp').innerText = 'Local Indisponível';
-                    itemsDisplay.innerHTML = html;
-                    return;
-                }
-            } else {
-                 document.querySelector('.btn-whatsapp').disabled = true;
-                 document.querySelector('.btn-whatsapp').innerText = 'Selecione o Local de Entrega';
-            }
-
-
-            // 3. Resumo de Valores
-            html += `<div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px;">
-                        <div class="cart-fee-line">
-                            <span style="font-weight: normal;">Subtotal:</span>
-                            <span style="font-weight: normal;">${formatBRL(orderTotal)}</span>
-                        </div>
-                        <div class="cart-fee-line">
-                            <span style="font-weight: normal;">Taxa de Entrega (${deliveryText}):</span>
-                            <span style="font-weight: normal;">${formatBRL(deliveryFee)}</span>
-                        </div>
-                    </div>`;
-
-            html += `<div class="summary-total">Total Final: ${formatBRL(grandTotal)}</div>`;
-
-            itemsDisplay.innerHTML = html;
-            checkDeliveryDetails(); 
-        }
-
-
-        function openCheckoutModal() {
-            if(cart.length === 0) {
-                 alert("Seu carrinho está vazio!");
-                 return;
-            }
-            
-            document.getElementById('checkout-modal').style.display = 'flex';
-            updateCartDisplayInModal(); 
-            checkDeliveryDetails(); 
-        }
-
-        function closeCheckoutModal() {
-            document.getElementById('checkout-modal').style.display = 'none';
-        }
-
-        function sendToWhatsapp() {
-            const name = document.getElementById('customer-name').value;
-            const location = document.getElementById('delivery-location').value;
-            const addressDetails = document.getElementById('address-details').value;
-            const payment = document.getElementById('payment-method').value;
-            const notes = document.getElementById('customer-notes').value;
-
-            if (!name || !location || !addressDetails) {
-                alert("Por favor, preencha seu nome e todos os detalhes do endereço para finalizar o pedido.");
-                return;
-            }
-            
-            const locationData = deliveryZones.find(z => z.name === location);
-            const deliveryFee = locationData ? locationData.fee : 0.00;
-            const orderTotal = cart.reduce((sum, item) => sum + item.price, 0);
-            const grandTotal = orderTotal + deliveryFee;
-
-
-            // 1. Agrupa itens para a mensagem
-            let groupedCart = {};
-            cart.forEach(item => {
-                if (!groupedCart[item.id]) {
-                    groupedCart[item.id] = { ...item, quantity: 0 };
-                }
-                groupedCart[item.id].quantity++;
-            });
-
-            // 2. Constrói mensagem
-            let message = `*🍕 NOVO PEDIDO - CANTINA ÁGAPE 🍕*\n\n`;
-            message += `*CLIENTE:* ${name}\n`;
-            message += `*LOCALIDADE:* ${location}\n`;
-            message += `*DETALHES DO ENDEREÇO:* ${addressDetails}\n`;
-            message += `*PAGAMENTO:* ${payment}\n`;
-            if (notes) {
-                message += `*OBSERVAÇÕES:* ${notes}\n`;
-            }
-            message += `--------------------------------\n`;
-            message += `*ITENS DO PEDIDO:*\n`;
-
-            for (let id in groupedCart) {
-                const item = groupedCart[id];
-                const lineTotal = item.quantity * item.price;
-                message += `  ${item.quantity}x ${item.name} (${formatBRL(lineTotal)})\n`;
-            }
-
-            message += `--------------------------------\n`;
-            message += `*SUBTOTAL:* ${formatBRL(orderTotal)}\n`;
-            message += `*TAXA DE ENTREGA:* ${formatBRL(deliveryFee)}\n`;
-            message += `*TOTAL FINAL:* ${formatBRL(grandTotal)}\n\n`;
-            message += `(Aguarde a confirmação da Cantina Ágape!)`;
-
-            // Enviar
-            const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
-    </script>
 </body>
 </html>
